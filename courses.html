@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Learning Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+
+
+
+
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #2e7d32, #66bb6a);
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .header {
+            background: #ffffff;
+            padding: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 300px;
+            text-align: center;
+            animation: slideIn 0.5s ease-in-out;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #43a047, #1b5e20);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 18px;
+            transition: all 0.3s ease-in-out;
+            font-weight: bold;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+        }
+        .button:hover {
+            background: linear-gradient(135deg, #1b5e20, #43a047);
+            transform: scale(1.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+
+
+    <div class="header">Welcome to Our E-Learning Platform</div>
+    <div class="container">
+        <div class="card">
+            <img src="resourse/cat-1.jpg" alt="E-learning">
+            <h2>Learn Anytime</h2>
+            <p>Access high-quality courses from anywhere in the world.</p>
+            <a href="pages.html" class="button">Get Started</a>
+        </div>
+        <div class="card">
+            <img src="resourse/cat-2.jpg" alt="Online Classes">
+            <h2>Expert Instructors</h2>
+            <p>Learn from industry experts with practical experience.</p>
+            <a href="teammm.html" class="button">Learn More</a>
+        </div>
+        <div class="card">
+            <img src="resourse/cat-3.jpg" alt="Certification">
+            <h2>Get Certified</h2>
+            <p>Earn recognized certificates to advance your career.</p>
+            <a href="contact.html" class="button">Join Now</a>
+        </div>
+    </div>
+</body>
+</html>

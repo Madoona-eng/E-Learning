@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        /* إعدادات الصفحة */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4CAF50, #2E3B4E);
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* العنوان */
+        .header {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #FF3B3F; /* لون أحمر */
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* رقم 404 الكبير */
+        .error-code {
+            font-size: 8rem;
+            font-weight: bold;
+            color: #FF3B3F;
+            text-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            animation: bounce 1.5s infinite;
+        }
+
+        /* النص التوضيحي */
+        .message {
+            font-size: 1.5rem;
+            color: #ccc;
+            margin: 15px 20px;
+            max-width: 600px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* زر العودة */
+        .home-button {
+            background-color: #4CAF50; /* لون أخضر */
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .home-button:hover {
+            background: #388E3C;
+            transform: scale(1.1);
+        }
+
+        /* أنيميشن النص */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* أنيميشن القفز */
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">Oops! Page Not Found</div>
+    <div class="error-code">404</div>
+    <div class="message">Sorry, the page you are looking for doesn't exist. You may have mistyped the address or the page may have moved.</div>
+    <a href="index.html" class="home-button">Go Back to Home</a>
+
+</body>
+</html>

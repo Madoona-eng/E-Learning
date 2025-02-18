@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+    <link rel="stylesheet" href="login.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      
+      const firebaseConfig = {
+            apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+            authDomain: "myproject-20868.firebaseapp.com",
+            projectId: "myproject-20868",
+            storageBucket: "myproject-20868.appspot.com",
+            messagingSenderId: "583730024363",
+            appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+            measurementId: "G-DG3HXGWRR1"
+        };
+      
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      
+      document.querySelector(".register form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.querySelector(".register input[type='email']").value;
+        const password = document.querySelector(".register input[type='password']").value;
+        
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            alert("Registration Successful!");
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      });
+      
+      document.querySelector(".login form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.querySelector(".login input[type='email']").value;
+        const password = document.querySelector(".login input[type='password']").value;
+        
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            alert("Login Successful!");
+            window.location.href = "index.html";
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      });
+    </script>
+  </head>
+  <body>
+
+
+
+
+
+<!-- ////////////////////////////////////// -->
+
+    <div class="wrapper">
+      <span class="bg-animate"></span>
+      <span class="bg-animate2"></span>
+      <div class="form-box login">
+        <h4 class="animation" style="--i: 0; --j: 21">
+          Hello, log in to your account
+        </h4>
+        <form class="form">
+          <div class="input-box animation" style="--i: 1; --j: 22">
+            <input type="email" required />
+            <label> Your email</label>
+            <i class="bx bxs-envelope"></i>
+          </div>
+          <div class="input-box animation" style="--i: 1; --j: 23">
+            <input type="password" required />
+            <label> Password</label>
+            <i class="bx bxs-lock-alt"></i>
+          </div>
+          <button type="submit" class="btn animation" style="--i: 3; --j: 24">
+            Login
+          </button>
+          <div class="logreg-link animation" style="--i: 4; --j: 25">
+            <p>
+              Don't have an account?
+              <a href="#" class="register-link animation"> Register now</a>
+            </p>
+          </div>
+        </form>
+      </div>
+      <div class="form-box register">
+        <h4 class="animation" style="--i: 17; --j: 0">!!Hello!! New here?</h4>
+        <form>
+          <div class="input-box animation" style="--i: 18; --j: 1">
+            <input type="text" required />
+            <label> Username</label>
+            <i class="bx bxs-user"></i>
+          </div>
+          <div class="input-box animation" style="--i: 19; --j: 2">
+            <input type="email" required />
+            <label> Your email</label>
+            <i class="bx bxs-envelope"></i>
+          </div>
+          <div class="input-box animation" style="--i: 20; --j: 3">
+            <input type="password" required />
+            <label>Password</label>
+            <i class="bx bxs-lock-alt"></i>
+          </div>
+          <button type="submit" class="btn animation" style="--i: 21; --j: 4">
+            Register now
+          </button>
+          <div class="logreg-link animation" style="--i: 22; --j: 5">
+            <p>
+              Already a member?
+              <a href="#" class="login-link animation"> Login here</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script>
+      const wrapper = document.querySelector('.wrapper');
+      const registerlink = document.querySelector('.register-link');
+      const loginlink = document.querySelector('.login-link');
+
+      registerlink.onclick = () => {
+        wrapper.classList.add('active');
+      }
+      loginlink.onclick = () => {
+        wrapper.classList.remove('active');
+      }
+    </script>
+  </body>
+</html>

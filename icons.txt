@@ -1,0 +1,1759 @@
+1- <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+
+
+
+<div class="social-media">
+    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+    <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
+    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+Share
+
+ME
+You said:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Courses</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="pages.css">
+    <style>
+        .form-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            margin: 20px auto;
+        }
+        input, textarea, button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #2c7b3d;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #22602e;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Available Courses</h1>
+    </header>
+     <button id="add-course-btn">Add Sample Courses</button> 
+    
+    <div class="courses-container" id="courses-container">
+        <!-- سيتم إدراج الكورسات هنا من Firestore -->
+    </div>
+    <br>
+    <br>
+    <div><a href="index.html"><button style="background-color: #2c7b3d;color: black; border-radius: 10;"  >Go To Back</button></a></div>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+            authDomain: "myproject-20868.firebaseapp.com",
+            projectId: "myproject-20868",
+            storageBucket: "myproject-20868.appspot.com",
+            messagingSenderId: "583730024363",
+            appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+            measurementId: "G-DG3HXGWRR1"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+    
+        async function fetchCourses() {
+            const coursesContainer = document.getElementById("courses-container");
+            const querySnapshot = await getDocs(collection(db, "courses"));
+            coursesContainer.innerHTML = "";
+    
+            querySnapshot.forEach(doc => {
+                const course = doc.data();
+                const courseElement = document.createElement("div");
+                courseElement.classList.add("course-card");
+                courseElement.innerHTML = 
+                    <div class="course-image">
+                        <img src="${course.image}" alt="${course.title}">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">${course.title}</h3>
+                        <p class="course-description">${course.description}</p>
+                        <p class="course-price">$${course.price}</p>
+                        <div class="course-actions">
+                            <button class="enroll-btn">Enroll Now</button>
+                            <button class="wishlist-btn">Add to Wishlist</button>
+                        </div>
+                    </div>;
+    
+                // إضافة حدث عند النقر على زر "Enroll Now"
+                courseElement.querySelector(".enroll-btn").addEventListener("click", async () => {
+                    try {
+                        const enrollmentData = { ...course, approved: false };
+                        await addDoc(collection(db, "enrollments"), enrollmentData);
+                        alert("Enrolled successfully! Waiting for approval.");
+                    } catch (error) {
+                        console.error("Error enrolling: ", error);
+                        alert("Failed to enroll. Please try again.");
+                    }
+                });
+    
+                // إضافة حدث عند النقر على زر "Add to Wishlist"
+                courseElement.querySelector(".wishlist-btn").addEventListener("click", async () => {
+                    try {
+                        await addDoc(collection(db, "wishlist"), course);
+                        alert(${course.title} added to wishlist!);
+                    } catch (error) {
+                        console.error("Error adding to wishlist: ", error);
+                        alert("Failed to add to wishlist. Please try again.");
+                    }
+                });
+    
+                coursesContainer.appendChild(courseElement);
+            });
+        }
+    
+        async function addSampleCourses() {
+            fetchCourses();
+        }
+    
+        document.getElementById("add-course-btn").addEventListener("click", addSampleCourses);
+    
+        fetchCourses();
+    </script>
+    
+    <script src="pages.js"></script>
+</body>
+</html> explain this code line by line ,fexplain firestore in this code explain js in this code by simpel way اشرح كاني اول مره اعرف الحاجات دي
+ChatGPT said:
+أوه، حلو! 🤩 أنت عندك كود HTML مع Firebase Firestore لجلب الكورسات وعرضها على الصفحة، وكمان عندك زرار لإضافة الكورسات لسلة الأمنيات والتسجيل فيهم! خليني أشرح لك الكود سطر بسطر وبطريقة سهلة كأنها أول مرة تشوف فيها الكلام ده. 👌😃
+
+🏗️ 1. HTML - بناء الصفحة الأساسية
+الكود مكتوب بلغة HTML وهي لغة الهيكلة اللي بتحدد عناصر الصفحة.
+
+✅ أهم أجزاء الـ HTML:
+1️⃣ تعريف الصفحة واللغة:
+
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html lang="en">
+⬅️ ده بيحدد إن الصفحة HTML وبتستخدم اللغة الإنجليزية.
+
+2️⃣ إضافة ملفات الـ CSS والأيقونات:
+
+html
+Copy
+Edit
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="pages.css">
+⬅️ الأول بيحمل أيقونات جاهزة زي القلوب والنجوم، والتاني بيحمل ملف التصميم الخاص بالموقع.
+
+3️⃣ العنوان والزرار لإضافة الكورسات:
+
+html
+Copy
+Edit
+<header>
+    <h1>Available Courses</h1>
+</header>
+<button id="add-course-btn">Add Sample Courses</button>
+⬅️ هنا عندنا عنوان الصفحة "Available Courses" وزرار لإضافة كورسات عشوائية.
+
+4️⃣ المكان اللي هيتم عرض الكورسات فيه:
+
+html
+Copy
+Edit
+<div class="courses-container" id="courses-container"></div>
+⬅️ ده المكان اللي هيتم فيه إضافة الكورسات اللي جايه من قاعدة البيانات.
+
+5️⃣ زر الرجوع للصفحة السابقة:
+
+html
+Copy
+Edit
+<div><a href="index.html"><button>Go To Back</button></a></div>
+⬅️ زر ينقلك للصفحة الرئيسية.
+
+🔥 2. JavaScript - التعامل مع Firebase Firestore
+الآن ندخل على الجزء المهم: جلب وإضافة البيانات باستخدام Firestore.
+
+📌 أول حاجة: استدعاء مكتبات Firebase
+js
+Copy
+Edit
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+⬅️ هنا بنحمل مكتبات Firebase اللي هنستخدمها لإدارة قاعدة البيانات (Firestore).
+
+📌 تهيئة Firebase وربطه بالمشروع
+js
+Copy
+Edit
+const firebaseConfig = {
+    apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+    authDomain: "myproject-20868.firebaseapp.com",
+    projectId: "myproject-20868",
+    storageBucket: "myproject-20868.appspot.com",
+    messagingSenderId: "583730024363",
+    appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+    measurementId: "G-DG3HXGWRR1"
+};
+⬅️ دي بيانات المشروع على Firebase علشان نقدر نوصله.
+
+📌 تفعيل قاعدة البيانات Firestore
+js
+Copy
+Edit
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+⬅️ هنا بنشغل Firebase ونقول له "احنا هنستخدم Firestore".
+
+🔄 3. دالة جلب الكورسات وعرضها في الصفحة
+js
+Copy
+Edit
+async function fetchCourses() {
+    const coursesContainer = document.getElementById("courses-container");
+    const querySnapshot = await getDocs(collection(db, "courses"));
+    coursesContainer.innerHTML = "";
+⬅️ دي دالة بتجيب الكورسات من Firestore وتعرضها في الصفحة.
+
+الخطوات اللي بتحصل هنا: 1️⃣ getDocs(collection(db, "courses")) ➝ بيجيب كل البيانات الموجودة في مجموعة "courses". 2️⃣ coursesContainer.innerHTML = ""; ➝ بيمسح أي محتوى قديم قبل عرض البيانات الجديدة.
+
+📌 4. إضافة الكورسات للصفحة
+js
+Copy
+Edit
+querySnapshot.forEach(doc => {
+    const course = doc.data();
+    const courseElement = document.createElement("div");
+    courseElement.classList.add("course-card");
+    courseElement.innerHTML = `
+        <div class="course-image">
+            <img src="${course.image}" alt="${course.title}">
+        </div>
+        <div class="course-content">
+            <h3 class="course-title">${course.title}</h3>
+            <p class="course-description">${course.description}</p>
+            <p class="course-price">$${course.price}</p>
+            <div class="course-actions">
+                <button class="enroll-btn">Enroll Now</button>
+                <button class="wishlist-btn">Add to Wishlist</button>
+            </div>
+        </div>`;
+⬅️ هنا بيتم إنشاء عنصر جديد لكل كورس في الصفحة:
+
+course.image ➝ صورة الكورس.
+course.title ➝ اسم الكورس.
+course.description ➝ وصف الكورس.
+course.price ➝ سعر الكورس.
+🛒 5. زر التسجيل في الكورس
+js
+Copy
+Edit
+courseElement.querySelector(".enroll-btn").addEventListener("click", async () => {
+    try {
+        const enrollmentData = { ...course, approved: false };
+        await addDoc(collection(db, "enrollments"), enrollmentData);
+        alert("Enrolled successfully! Waiting for approval.");
+    } catch (error) {
+        console.error("Error enrolling: ", error);
+        alert("Failed to enroll. Please try again.");
+    }
+});
+⬅️ لما المستخدم يضغط على زر "Enroll Now":
+
+الكود يضيف بيانات الكورس إلى مجموعة جديدة اسمها "enrollments".
+بيخلي التسجيل في الكورس محتاج موافقة approved: false.
+يظهر رسالة تأكيد للمستخدم.
+⭐ 6. زر الإضافة إلى المفضلة (Wishlist)
+js
+Copy
+Edit
+courseElement.querySelector(".wishlist-btn").addEventListener("click", async () => {
+    try {
+        await addDoc(collection(db, "wishlist"), course);
+        alert(`${course.title} added to wishlist!`);
+    } catch (error) {
+        console.error("Error adding to wishlist: ", error);
+        alert("Failed to add to wishlist. Please try again.");
+    }
+});
+⬅️ لما المستخدم يضغط على زر "Add to Wishlist":
+
+يضيف الكورس إلى مجموعة wishlist في Firestore.
+يظهر رسالة تأكيد.
+🆕 7. تحميل الكورسات تلقائيًا عند فتح الصفحة
+js
+Copy
+Edit
+fetchCourses();
+⬅️ الكود بيشغل دالة fetchCourses() أول ما الصفحة تفتح علشان يعرض الكورسات المسجلة في Firestore.
+
+🏁 الخلاصة
+🔥 الكود ده عبارة عن موقع بسيط لعرض الكورسات باستخدام Firebase Firestore، واللي بيعمله بالضبط هو: 1️⃣ يجلب الكورسات من Firestore. 2️⃣ يعرضها في الصفحة. 3️⃣ يسمح لك بالتسجيل في الكورسات مع انتظار الموافقة. 4️⃣ يتيح لك إضافة الكورسات إلى قائمة المفضلة.
+
+كل حاجة شغالة باستخدام JavaScript مع Firestore بدون الحاجة لسيرفر خاص! 🚀🔥
+
+لو عندك أي سؤال أو حابب تعدّل في حاجة، قولي وأنا أساعدك! 😃💡
+
+
+
+
+
+
+You said:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="view.css">
+</head>
+<body>
+    <header>
+        <h1>Available Courses</h1>
+    </header>
+    <div class="courses-container" id="available-courses">
+        <!-- Available courses will be loaded here -->
+    </div>
+    
+    <header>
+        <h1>Enrolled Courses</h1>
+    </header>
+    <div class="courses-container" id="enrolled-courses">
+        <!-- Enrolled courses will be loaded here -->
+    </div>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } 
+            from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+            authDomain: "myproject-20868.firebaseapp.com",
+            projectId: "myproject-20868",
+            storageBucket: "myproject-20868.appspot.com",
+            messagingSenderId: "583730024363",
+            appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+            measurementId: "G-DG3HXGWRR1"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+    
+        async function fetchCourses() {
+            const availableContainer = document.getElementById("available-courses");
+            availableContainer.innerHTML = ""; 
+            const querySnapshot = await getDocs(collection(db, "courses"));
+            querySnapshot.forEach(doc => {
+                const course = doc.data();
+                availableContainer.appendChild(createCourseCard(course, doc.id, false));
+            });
+        }
+    
+        async function fetchEnrollments() {
+            const enrolledContainer = document.getElementById("enrolled-courses");
+            enrolledContainer.innerHTML = "";
+            const querySnapshot = await getDocs(collection(db, "enrollments"));
+            querySnapshot.forEach(doc => {
+                const enrollment = doc.data();
+                if (!enrollment.approved) {
+                    enrolledContainer.appendChild(createCourseCard(enrollment, doc.id, true));
+                }
+            });
+        }
+    
+        function createCourseCard(course, id, isEnrolled) {
+            const courseCard = document.createElement("div");
+            courseCard.classList.add("course-card");
+            
+            courseCard.innerHTML = 
+                <div class="course-image">
+                    <img src="${course.image}" alt="${course.title}">
+                </div>
+                <div class="course-content">
+                    <h3 class="course-title">${course.title}</h3>
+                    <p class="course-description">${course.description}</p>
+                    <p class="course-price">$${course.price}</p>
+                    <div class="course-actions">
+                        ${isEnrolled ? 
+                        <button class="approve-btn" onclick="approveCourse('${id}')">Approve</button>
+                        <button class="ignore-btn" onclick="ignoreCourse('${id}')">Ignore</button>
+                         : 
+                        <button class="delete-btn" onclick="deleteCourse('${id}')">Delete</button>
+                        <button class="update-btn" onclick="updateCourse('${id}')">Edit</button>
+                        }
+                    </div>
+                </div>
+            ;
+            return courseCard;
+        }
+    
+        async function deleteCourse(id) {
+            await deleteDoc(doc(db, "courses", id));
+            fetchCourses();
+        }
+    
+        async function updateCourse(id) {
+            const newTitle = prompt("Enter new title:");
+            if (newTitle) {
+                await updateDoc(doc(db, "courses", id), { title: newTitle });
+                fetchCourses();
+            }
+            const newPrice = prompt("Enter new Price:");
+            if (newPrice) {
+                await updateDoc(doc(db, "courses", id), { price: newPrice });
+                fetchCourses();
+            }
+        }
+    
+        async function approveCourse(id) {
+            await updateDoc(doc(db, "enrollments", id), { approved: true });
+            fetchEnrollments();
+        }
+    
+        async function ignoreCourse(id) {
+            await updateDoc(doc(db, "enrollments", id), { approved: false });
+            fetchEnrollments();
+        }
+    
+        window.deleteCourse = deleteCourse;
+        window.updateCourse = updateCourse;
+        window.approveCourse = approveCourse;
+        window.ignoreCourse = ignoreCourse;
+    
+        window.onload = function () {
+            fetchCourses();
+            fetchEnrollments();
+        };
+    </script>
+</body>
+</html>  explain this code line by line ,explain firestore explain js by simple way
+ChatGPT said:
+حلو جدًا! 😃 الكود ده عبارة عن صفحة لعرض الكورسات، وفيها قسم للكورسات المتاحة وقسم للكورسات اللي تم التسجيل فيها بس لسه مستنيا الموافقة. والصفحة بتستخدم Firebase Firestore لتخزين وجلب البيانات، وكمان تقدر تحذف، تعدّل، أو توافق على الكورسات! 🏆
+
+يلا نشرح الكود سطر بسطر وبطريقة سهلة! 🚀
+
+🔹 1. HTML - الهيكلة الأساسية للصفحة
+📌 تعريف الصفحة وإضافة ملفات الـ CSS
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="view.css">
+</head>
+🔹 هنا بنحدد إن الصفحة HTML، ونضيف ملف التصميم view.css، وكمان مكتبة الأيقونات FontAwesome عشان نستخدمها لو احتجنا.
+
+📌 إضافة قسم الكورسات المتاحة
+html
+Copy
+Edit
+<body>
+    <header>
+        <h1>Available Courses</h1>
+    </header>
+    <div class="courses-container" id="available-courses">
+        <!-- Available courses will be loaded here -->
+    </div>
+🔹 هنا بنعرض الكورسات المتاحة واللي لسه ما حدش سجل فيها.
+
+📌 إضافة قسم الكورسات المسجلة
+html
+Copy
+Edit
+<header>
+    <h1>Enrolled Courses</h1>
+</header>
+<div class="courses-container" id="enrolled-courses">
+    <!-- Enrolled courses will be loaded here -->
+</div>
+🔹 هنا بنعرض الكورسات اللي الناس سجلوا فيها، بس لسه مستنيين الموافقة.
+
+🔹 2. JavaScript - التعامل مع Firestore
+📌 استيراد Firebase وربطه بالمشروع
+js
+Copy
+Edit
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } 
+    from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+🔹 هنا بنستدعي مكتبات Firebase اللي هنحتاجها:
+
+initializeApp ➝ لتشغيل Firebase في المشروع.
+getFirestore ➝ لتشغيل Firestore اللي هو قاعدة البيانات.
+collection, getDocs ➝ لجلب البيانات من Firestore.
+doc, updateDoc, deleteDoc ➝ لتحديث أو حذف البيانات.
+📌 إعداد Firebase وتوصيله بالمشروع
+js
+Copy
+Edit
+const firebaseConfig = {
+    apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+    authDomain: "myproject-20868.firebaseapp.com",
+    projectId: "myproject-20868",
+    storageBucket: "myproject-20868.appspot.com",
+    messagingSenderId: "583730024363",
+    appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+    measurementId: "G-DG3HXGWRR1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+🔹 هنا بنحط بيانات Firebase الخاصة بالمشروع ونشغّل Firestore.
+
+📌 جلب الكورسات المتاحة من Firestore وعرضها
+js
+Copy
+Edit
+async function fetchCourses() {
+    const availableContainer = document.getElementById("available-courses");
+    availableContainer.innerHTML = ""; 
+    const querySnapshot = await getDocs(collection(db, "courses"));
+    querySnapshot.forEach(doc => {
+        const course = doc.data();
+        availableContainer.appendChild(createCourseCard(course, doc.id, false));
+    });
+}
+🔹 دي دالة بتجيب الكورسات من قاعدة البيانات courses وتعرضها في الصفحة.
+
+🛠 كيف تعمل؟ 1️⃣ getDocs(collection(db, "courses")) ➝ بيجيب كل الكورسات من Firestore.
+2️⃣ querySnapshot.forEach(doc => {...}) ➝ بيمرّ على كل كورس واحد واحد.
+3️⃣ createCourseCard(course, doc.id, false) ➝ بيعمل كرت عرض للكورس باستخدام createCourseCard().
+
+📌 جلب الكورسات المسجلة وعرضها
+js
+Copy
+Edit
+async function fetchEnrollments() {
+    const enrolledContainer = document.getElementById("enrolled-courses");
+    enrolledContainer.innerHTML = "";
+    const querySnapshot = await getDocs(collection(db, "enrollments"));
+    querySnapshot.forEach(doc => {
+        const enrollment = doc.data();
+        if (!enrollment.approved) {
+            enrolledContainer.appendChild(createCourseCard(enrollment, doc.id, true));
+        }
+    });
+}
+🔹 دي دالة بتجيب الكورسات اللي الطلاب سجلوا فيها، لكن لسه مش معتمدة (approved = false).
+
+📌 إنشاء كرت الكورس (للكورسات العادية والمسجلة)
+js
+Copy
+Edit
+function createCourseCard(course, id, isEnrolled) {
+    const courseCard = document.createElement("div");
+    courseCard.classList.add("course-card");
+
+    courseCard.innerHTML = `
+        <div class="course-image">
+            <img src="${course.image}" alt="${course.title}">
+        </div>
+        <div class="course-content">
+            <h3 class="course-title">${course.title}</h3>
+            <p class="course-description">${course.description}</p>
+            <p class="course-price">$${course.price}</p>
+            <div class="course-actions">
+                ${isEnrolled ? `
+                <button class="approve-btn" onclick="approveCourse('${id}')">Approve</button>
+                <button class="ignore-btn" onclick="ignoreCourse('${id}')">Ignore</button>
+                ` : `
+                <button class="delete-btn" onclick="deleteCourse('${id}')">Delete</button>
+                <button class="update-btn" onclick="updateCourse('${id}')">Edit</button>
+                `}
+            </div>
+        </div>
+    `;
+    return courseCard;
+}
+🔹 دي دالة بتنشئ كرت لكل كورس وتضيف فيه:
+
+زر الحذف والتعديل للكورسات العادية.
+زر الموافقة أو الرفض للكورسات المسجلة.
+📌 حذف كورس من Firestore
+js
+Copy
+Edit
+async function deleteCourse(id) {
+    await deleteDoc(doc(db, "courses", id));
+    fetchCourses();
+}
+🔹 لما المستخدم يضغط Delete، الكود يحذف الكورس من Firestore ويعيد تحميل الكورسات.
+
+📌 تحديث (تعديل) الكورسات
+js
+Copy
+Edit
+async function updateCourse(id) {
+    const newTitle = prompt("Enter new title:");
+    if (newTitle) {
+        await updateDoc(doc(db, "courses", id), { title: newTitle });
+        fetchCourses();
+    }
+    const newPrice = prompt("Enter new Price:");
+    if (newPrice) {
+        await updateDoc(doc(db, "courses", id), { price: newPrice });
+        fetchCourses();
+    }
+}
+🔹 لما المستخدم يضغط Edit:
+
+يظهر له نافذة إدخال (prompt) عشان يكتب اسم جديد وسعر جديد.
+يتم تحديث Firestore بـ updateDoc().
+يتم إعادة تحميل الكورسات.
+📌 الموافقة أو الرفض لكورس مسجل
+js
+Copy
+Edit
+async function approveCourse(id) {
+    await updateDoc(doc(db, "enrollments", id), { approved: true });
+    fetchEnrollments();
+}
+
+async function ignoreCourse(id) {
+    await updateDoc(doc(db, "enrollments", id), { approved: false });
+    fetchEnrollments();
+}
+🔹 هنا تقدر:
+
+الموافقة على الكورس (approved: true).
+تركه مرفوضًا (approved: false).
+📌 تشغيل الكود عند تحميل الصفحة
+js
+Copy
+Edit
+window.onload = function () {
+    fetchCourses();
+    fetchEnrollments();
+};
+🔹 لما الصفحة تفتح، يتم تحميل كل الكورسات العادية والمسجلة مباشرةً.
+
+🎯 الخلاصة
+🔹 الكود يعرض الكورسات من Firestore.
+🔹 يسمح بالتسجيل، الموافقة، التعديل، والحذف بسهولة.
+🔹 يتم تحديث البيانات تلقائيًا عند تنفيذ أي تغيير.
+
+لو عندك أي استفسار، قول لي! 😊🚀
+
+
+
+
+
+
+You said:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll Courses</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4CAF50, #2E3B4E);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .enroll-container {
+            text-align: center;
+            padding: 20px;
+        }
+        .enroll-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .enroll-card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            width: 280px;
+            text-align: center;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .enroll-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .course-info h3 {
+            color: white;
+        }
+        .course-info p {
+            color: #ddd;
+        }
+        .enroll-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="enroll-container">
+        <h1>📚 Enrolled Courses</h1>
+        <button class="enroll-btn" onclick="fetchCourses()">Get Enrolled Courses</button>
+        <div class="enroll-grid" id="enrollGrid"></div>
+        <p id="statusMessage" style="color: white; margin-top: 20px;"></p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+            authDomain: "myproject-20868.firebaseapp.com",
+            projectId: "myproject-20868",
+            storageBucket: "myproject-20868.appspot.com",
+            messagingSenderId: "583730024363",
+            appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+            measurementId: "G-DG3HXGWRR1"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+    
+        async function fetchCourses() {
+            const enrollGrid = document.getElementById("enrollGrid");
+            const statusMessage = document.getElementById("statusMessage");
+            enrollGrid.innerHTML = "";
+            statusMessage.textContent = "Fetching courses...";
+    
+            try {
+                const enrollmentsSnapshot = await getDocs(query(collection(db, "enrollments"), where("approved", "==", true)));
+                
+                if (enrollmentsSnapshot.empty) {
+                    statusMessage.textContent = "No enrolled courses found.";
+                    return;
+                }
+    
+                enrollmentsSnapshot.forEach(doc => {
+                    const course = doc.data();
+                    const courseCard = document.createElement("div");
+                    courseCard.classList.add("enroll-card");
+                    courseCard.innerHTML = 
+                        <img src="${course.image}" alt="${course.title}">
+                        <div class="course-info">
+                            <h3>${course.title}</h3>
+                            <p>${course.description}</p>
+                            <p><strong>Price:</strong> $${course.price}</p>
+                        </div>
+                    ;
+                    enrollGrid.appendChild(courseCard);
+                });
+    
+                statusMessage.textContent = "Courses fetched successfully!";
+            } catch (error) {
+                statusMessage.textContent = "Failed to fetch courses. Please try again.";
+                console.error("Error fetching courses:", error);
+            }
+        }
+        
+        window.fetchCourses = fetchCourses;
+    </script>
+</body>
+</html> explain this code in simpleway line by line
+ChatGPT said:
+حلو جدًا! 😃 الكود ده هو صفحة لعرض الكورسات اللي تم الموافقة على تسجيلها من Firebase Firestore، بحيث المستخدم يقدر يشوف الكورسات اللي سجل فيها بعد الموافقة عليها. 🎉
+
+يلا نشرح الكود سطر بسطر وبطريقة سهلة وممتعة! 🚀
+
+🔹 1. HTML - الهيكلة الأساسية للصفحة
+📌 نبدأ بتحديد نوع الصفحة واللغة:
+
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html lang="en">
+⬅️ ده بيقول للمتصفح إن الصفحة HTML واللغة إنجليزية.
+
+📌 إعداد الصفحة والتصميم الأساسي داخل <head>:
+
+html
+Copy
+Edit
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll Courses</title>
+⬅️ بنحدد ترميز الأحرف UTF-8، ونضبط الصفحة بحيث تكون متوافقة مع كل الأجهزة (Responsive)، ونعطيها عنوان "Enroll Courses".
+
+📌 إضافة تصميم CSS داخل <style> مباشرةً:
+
+css
+Copy
+Edit
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #4CAF50, #2E3B4E);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+⬅️ بيخلي خلفية الصفحة بشكل متدرج أخضر ورمادي غامق، ويجعل كل العناصر في المنتصف.
+
+📌 عنوان الصفحة وزر عرض الكورسات المسجلة:
+
+html
+Copy
+Edit
+<div class="enroll-container">
+    <h1>📚 Enrolled Courses</h1>
+    <button class="enroll-btn" onclick="fetchCourses()">Get Enrolled Courses</button>
+    <div class="enroll-grid" id="enrollGrid"></div>
+    <p id="statusMessage" style="color: white; margin-top: 20px;"></p>
+</div>
+⬅️ العناصر الموجودة هنا: 1️⃣ 📚 Enrolled Courses ➝ عنوان يوضح إن الصفحة لعرض الكورسات المسجلة.
+2️⃣ زر Get Enrolled Courses ➝ عند الضغط عليه، يتم استدعاء دالة fetchCourses() لعرض الكورسات.
+3️⃣ div فارغ (id="enrollGrid") ➝ ده المكان اللي هيتم فيه عرض الكورسات بعد جلبها من Firebase.
+4️⃣ رسالة حالة (id="statusMessage") ➝ بتظهر "جاري جلب الكورسات..." أثناء التحميل أو رسالة خطأ لو في مشكلة.
+
+🔹 2. JavaScript - التعامل مع Firestore
+📌 استيراد Firebase وربطه بالمشروع:
+
+js
+Copy
+Edit
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+⬅️ هنا بنستدعي مكتبات Firebase اللي هنستخدمها:
+
+initializeApp ➝ لتشغيل Firebase.
+getFirestore ➝ لتشغيل Firestore (قاعدة البيانات).
+collection, getDocs ➝ لجلب البيانات من Firestore.
+query, where ➝ عشان نبحث عن الكورسات المعتمدة فقط.
+📌 إعداد Firebase وتوصيله بالمشروع:
+
+js
+Copy
+Edit
+const firebaseConfig = {
+    apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+    authDomain: "myproject-20868.firebaseapp.com",
+    projectId: "myproject-20868",
+    storageBucket: "myproject-20868.appspot.com",
+    messagingSenderId: "583730024363",
+    appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+    measurementId: "G-DG3HXGWRR1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+⬅️ هنا بنستخدم بيانات Firebase الخاصة بالمشروع ونشغّل Firestore.
+
+🔹 3. دالة جلب الكورسات المسجلة والمعتمدة فقط
+📌 إعداد fetchCourses() لجلب الكورسات من Firestore:
+
+js
+Copy
+Edit
+async function fetchCourses() {
+    const enrollGrid = document.getElementById("enrollGrid");
+    const statusMessage = document.getElementById("statusMessage");
+    enrollGrid.innerHTML = "";
+    statusMessage.textContent = "Fetching courses...";
+⬅️ أول حاجة بنمسح المحتوى القديم، ثم نعرض رسالة "جاري تحميل الكورسات...".
+
+📌 جلب الكورسات المسجلة اللي تمت الموافقة عليها:
+
+js
+Copy
+Edit
+try {
+    const enrollmentsSnapshot = await getDocs(query(collection(db, "enrollments"), where("approved", "==", true)));
+⬅️ هنا بنبحث فقط عن الكورسات اللي تمت الموافقة عليها (approved: true) داخل مجموعة enrollments.
+
+📌 التأكد إذا لم يكن هناك كورسات مسجلة:
+
+js
+Copy
+Edit
+if (enrollmentsSnapshot.empty) {
+    statusMessage.textContent = "No enrolled courses found.";
+    return;
+}
+⬅️ لو مافيش كورسات مسجلة، بتظهر رسالة تخبر المستخدم بذلك.
+
+📌 عرض الكورسات في الصفحة:
+
+js
+Copy
+Edit
+enrollmentsSnapshot.forEach(doc => {
+    const course = doc.data();
+    const courseCard = document.createElement("div");
+    courseCard.classList.add("enroll-card");
+    courseCard.innerHTML = `
+        <img src="${course.image}" alt="${course.title}">
+        <div class="course-info">
+            <h3>${course.title}</h3>
+            <p>${course.description}</p>
+            <p><strong>Price:</strong> $${course.price}</p>
+        </div>
+    `;
+    enrollGrid.appendChild(courseCard);
+});
+⬅️ هنا بننشئ كرت لكل كورس يحتوي على:
+
+الصورة (course.image)
+العنوان (course.title)
+الوصف (course.description)
+السعر (course.price)
+وبعد كده بنضيف الكارت إلى الصفحة.
+
+📌 إظهار رسالة نجاح بعد تحميل الكورسات:
+
+js
+Copy
+Edit
+statusMessage.textContent = "Courses fetched successfully!";
+⬅️ بعد تحميل الكورسات، بتتغير الرسالة إلى "تم تحميل الكورسات بنجاح!".
+
+📌 التعامل مع الأخطاء إذا حدثت مشكلة في جلب البيانات:
+
+js
+Copy
+Edit
+} catch (error) {
+    statusMessage.textContent = "Failed to fetch courses. Please try again.";
+    console.error("Error fetching courses:", error);
+}
+⬅️ لو حصل خطأ أثناء تحميل البيانات، بتظهر رسالة خطأ للمستخدم.
+
+📌 جعل الدالة متاحة للنقر من الزر في HTML:
+
+js
+Copy
+Edit
+window.fetchCourses = fetchCourses;
+⬅️ عشان لما المستخدم يضغط على الزر "Get Enrolled Courses"، يتم تشغيل fetchCourses().
+
+🎯 الخلاصة
+✅ الصفحة دي بتعرض الكورسات اللي تم التسجيل فيها بعد الموافقة عليها.
+✅ بتجلب البيانات من Firestore باستخدام Firebase.
+✅ بتظهر رسالة انتظار أثناء التحميل، ورسالة خطأ لو في مشكلة.
+✅ بتنظم الكورسات في كروت جميلة مع صور ووصف وسعر.
+
+🔥 دلوقتي أي شخص يقدر يشوف الكورسات اللي تم تسجيله فيها بسهولة! 🚀💚
+
+لو عندك أي سؤال أو عاوز تضيف ميزة جديدة، قولي وأنا أساعدك! 😃✨
+
+
+
+
+
+
+You said:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist Courses</title>
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4CAF50, #2E3B4E);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 { color: white; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); }
+        .wishlist-container { text-align: center; padding: 20px; backdrop-filter: blur(10px); }
+        .wishlist-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 20px; }
+        .wishlist-item {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            text-align: center;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+            position: relative;
+        }
+        .wishlist-item:hover { transform: scale(1.1) rotate(3deg); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); }
+        .wishlist-item img { width: 100%; height: auto; border-radius: 8px; transition: transform 0.3s; }
+        .wishlist-item:hover img { transform: scale(1.1); }
+        .wishlist-item h3 { margin: 10px 0 5px; color: white; }
+        .wishlist-item p { color: #ddd; font-size: 14px; font-style: italic; }
+        .remove-btn {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .remove-btn:hover { background: #cc0000; }
+    </style>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+            authDomain: "myproject-20868.firebaseapp.com",
+            projectId: "myproject-20868",
+            storageBucket: "myproject-20868.appspot.com",
+            messagingSenderId: "583730024363",
+            appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+            measurementId: "G-DG3HXGWRR1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function fetchWishlist() {
+            const wishlistItems = document.getElementById("wishlistItems");
+            wishlistItems.innerHTML = "";  // مسح المحتوى القديم
+
+            const querySnapshot = await getDocs(collection(db, "wishlist"));
+            querySnapshot.forEach(docSnap => {
+                const course = docSnap.data();
+                const courseId = docSnap.id;
+
+                const courseDiv = document.createElement("div");
+                courseDiv.classList.add("wishlist-item");
+                courseDiv.innerHTML = 
+                    <img src="${course.image}" alt="${course.title}">
+                    <h3>${course.title}</h3>
+                    <p>${course.description}</p>
+                    <button class="remove-btn" data-id="${courseId}">Remove</button>
+                ;
+
+                wishlistItems.appendChild(courseDiv);
+
+                // حذف الكورس عند الضغط على "Remove"
+                courseDiv.querySelector(".remove-btn").addEventListener("click", async (event) => {
+                    const id = event.target.getAttribute("data-id");
+                    await deleteDoc(doc(db, "wishlist", id));
+                    courseDiv.remove();
+                });
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchWishlist);
+    </script>
+</head>
+<body>
+    <div class="wishlist-container">
+        <h1>My Wishlist Courses</h1>
+        <div class="wishlist-items" id="wishlistItems">
+            <!-- سيتم تحميل الكورسات هنا -->
+        </div>
+     <a href="Page.html"><button  style="background-color: #4CAF50;color: black;font-size: large;border-radius: 10px;margin-top: 10px;">Go To Back</button></a> 
+    </div>
+</body>
+</html> explain line by line 
+ChatGPT said:
+حلو جدًا! 🎉 الكود ده هو صفحة لعرض قائمة المفضلة (Wishlist)، بحيث المستخدم يقدر يشوف الكورسات اللي ضافها للمفضلة ويقدر يحذفها بسهولة باستخدام Firebase Firestore. 😍
+
+يلا نشرح الكود سطر بسطر وبطريقة سهلة وممتعة! 🚀
+
+🔹 1. HTML - بناء الصفحة الأساسية
+📌 تعريف الصفحة واللغة:
+
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html lang="en">
+⬅️ بيحدد إن الصفحة HTML واللغة إنجليزية.
+
+📌 إعداد رأس الصفحة وإضافة تصميم CSS داخلي:
+
+html
+Copy
+Edit
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist Courses</title>
+⬅️ بنحدد ترميز الأحرف UTF-8، ونجعل الصفحة متوافقة مع كل الأجهزة (Responsive)، ونعطيها عنوان "Wishlist Courses".
+
+🔹 2. CSS - تصميم الصفحة
+📌 تنسيق خلفية الصفحة وتوسيط العناصر:
+
+css
+Copy
+Edit
+body {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #4CAF50, #2E3B4E);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+⬅️ يجعل الخلفية متدرجة بالأخضر والرمادي الغامق، وكل العناصر في المنتصف.
+
+📌 تصميم كروت المفضلة بتأثيرات جميلة عند التحويل (Hover Effect):
+
+css
+Copy
+Edit
+.wishlist-item {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    text-align: center;
+    padding: 15px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+    position: relative;
+}
+⬅️ كروت المفضلة شفافة بخلفية ضبابية وتأثير ظل لطيف.
+⬅️ عند تمرير الماوس فوقها (hover)، تتحرك الكارت بشكل جذاب وتدور قليلاً.
+
+📌 تصميم زر "Remove" لحذف الكورس من المفضلة:
+
+css
+Copy
+Edit
+.remove-btn {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.remove-btn:hover {
+    background: #cc0000;
+}
+⬅️ يجعل زر "Remove" باللون الأحمر، وعند تمرير الماوس عليه يصبح أغمق لإظهار التأثير.
+
+🔹 3. JavaScript - التعامل مع Firestore
+📌 استيراد Firebase وربطه بالمشروع:
+
+js
+Copy
+Edit
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+⬅️ هنا بنستدعي مكتبات Firebase اللي هنستخدمها:
+
+initializeApp ➝ لتشغيل Firebase.
+getFirestore ➝ لتشغيل Firestore (قاعدة البيانات).
+collection, getDocs ➝ لجلب الكورسات من Firestore.
+deleteDoc, doc ➝ لحذف كورس من المفضلة.
+📌 إعداد Firebase وتوصيله بالمشروع:
+
+js
+Copy
+Edit
+const firebaseConfig = {
+    apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+    authDomain: "myproject-20868.firebaseapp.com",
+    projectId: "myproject-20868",
+    storageBucket: "myproject-20868.appspot.com",
+    messagingSenderId: "583730024363",
+    appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+    measurementId: "G-DG3HXGWRR1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+⬅️ هنا بنستخدم بيانات Firebase الخاصة بالمشروع ونشغّل Firestore.
+
+📌 دالة fetchWishlist() لجلب الكورسات من المفضلة:
+
+js
+Copy
+Edit
+async function fetchWishlist() {
+    const wishlistItems = document.getElementById("wishlistItems");
+    wishlistItems.innerHTML = "";  // مسح المحتوى القديم
+⬅️ أول حاجة بنمسح المحتوى القديم علشان لو المستخدم ضغط الزر مرتين، ما تتكرر البيانات.
+
+📌 جلب البيانات من Firestore وعرضها في الصفحة:
+
+js
+Copy
+Edit
+const querySnapshot = await getDocs(collection(db, "wishlist"));
+querySnapshot.forEach(docSnap => {
+    const course = docSnap.data();
+    const courseId = docSnap.id;
+⬅️ نجيب كل الكورسات من مجموعة wishlist في قاعدة البيانات Firestore.
+⬅️ docSnap.id هو معرف الكورس في Firestore، هنستخدمه في الحذف بعد كده.
+
+📌 إنشاء كرت لكل كورس في المفضلة:
+
+js
+Copy
+Edit
+const courseDiv = document.createElement("div");
+courseDiv.classList.add("wishlist-item");
+courseDiv.innerHTML = `
+    <img src="${course.image}" alt="${course.title}">
+    <h3>${course.title}</h3>
+    <p>${course.description}</p>
+    <button class="remove-btn" data-id="${courseId}">Remove</button>
+`;
+wishlistItems.appendChild(courseDiv);
+⬅️ هنا بننشئ كرت لكل كورس يحتوي على:
+
+الصورة (course.image)
+العنوان (course.title)
+الوصف (course.description)
+زر "Remove" لحذف الكورس
+📌 حذف الكورسات من المفضلة عند الضغط على "Remove":
+
+js
+Copy
+Edit
+courseDiv.querySelector(".remove-btn").addEventListener("click", async (event) => {
+    const id = event.target.getAttribute("data-id");
+    await deleteDoc(doc(db, "wishlist", id));
+    courseDiv.remove();
+});
+⬅️ لما المستخدم يضغط "Remove": 1️⃣ نأخذ معرف الكورس من الزر.
+2️⃣ نحذفه من Firestore باستخدام deleteDoc().
+3️⃣ نمسح الكرت من الصفحة مباشرةً.
+
+📌 تشغيل fetchWishlist() تلقائيًا عند تحميل الصفحة:
+
+js
+Copy
+Edit
+document.addEventListener("DOMContentLoaded", fetchWishlist);
+⬅️ يتم تحميل قائمة المفضلة تلقائيًا عند فتح الصفحة.
+
+🔹 4. زر الرجوع للصفحة السابقة
+📌 إضافة زر الرجوع لصفحة أخرى:
+
+html
+Copy
+Edit
+<a href="Page.html">
+    <button style="background-color: #4CAF50; color: black; font-size: large; border-radius: 10px; margin-top: 10px;">
+        Go To Back
+    </button>
+</a>
+⬅️ زر جميل للعودة لصفحة أخرى، ممكن تكون الصفحة الرئيسية أو صفحة الكورسات.
+
+🎯 الخلاصة
+✅ الصفحة دي بتعرض الكورسات اللي أضفتها للمفضلة من Firestore.
+✅ يمكنك حذف الكورسات من المفضلة بضغطة زر.
+✅ البيانات تتحمل تلقائيًا عند فتح الصفحة.
+✅ تصميم عصري مع تأثيرات جميلة عند تمرير الماوس.
+
+🔥 دلوقتي تقدر تتحكم في المفضلة بطريقة سهلة واحترافية! 🚀💚
+
+📌 لو عندك أي سؤال أو حابب تضيف ميزة جديدة، قولي وأنا أساعدك! 😃✨
+
+
+
+
+
+
+You said:
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/e-learning.jpeg" type="image/x-icon" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="style/form.css" />
+    <title>signin-signup</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="signin-signup">
+            <!-- we should handle the action after make ahome-->
+            <form method="post" id="form_in" class="sign-in-form">
+
+                <h2 class="title">Sign in</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input id="Email_sign_in" type="email" placeholder="email" />
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input id="password_sign_in" type="password" placeholder="Password" />
+                </div>
+                <input id="submit_btn_in" type="submit" value="Login" class="btn" />
+                <p class="social-text">Or Sign in with social platform</p>
+                <div class="social-media">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+                <p class="account-text">
+                    Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a>
+                </p>
+            </form>
+            <form method="post" id="form" class="sign-up-form">
+                <h2 class="title">Sign up</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input id="Username_sign_up" type="text" placeholder="Username" />
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-envelope"></i>
+                    <input id="Email_sign_up" type="text" placeholder="Email" />
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input id="password_sign_up" type="password" placeholder="Password" />
+                </div>
+                <input id="submit_btn_up" type="submit" value="Sign up" class="btn" />
+                <p class="social-text">Or Sign in with social platform</p>
+                <div class="social-media">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+                <p class="account-text">
+                    Already have an account? <a href="#" id="sign-in-btn2">Sign in</a>
+                </p>
+            </form>
+        </div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <h3>Member of Platform?</h3>
+
+                    <button class="btn" id="sign-in-btn">Sign in</button>
+                </div>
+                <img src="signin.svg" alt="" class="image" />
+            </div>
+            <div class="panel right-panel">
+                <div class="content">
+                    <h3>New Member To Platform?</h3>
+
+                    <button class="btn" id="sign-up-btn">Sign up</button>
+                </div>
+                <img src="signup.svg" alt="" class="image" />
+            </div>
+        </div>
+    </div>
+    <script type="module" src="script/module.js"></script>
+    <script type="module" src="script/form.js"></script>
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/e-learning.jpeg" type="image/x-icon" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="style/form.css" />
+    <title>signin-signup</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="signin-signup">
+            <!-- we should handle the action after make ahome-->
+            <form method="post" id="form_in" class="sign-in-form">
+
+                <h2 class="title">Sign in</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input id="Email_sign_in" type="email" placeholder="email" />
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input id="password_sign_in" type="password" placeholder="Password" />
+                </div>
+                <input id="submit_btn_in" type="submit" value="Login" class="btn" />
+                <p class="social-text">Or Sign in with social platform</p>
+                <div class="social-media">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+                <p class="account-text">
+                    Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a>
+                </p>
+            </form>
+            <form method="post" id="form" class="sign-up-form">
+                <h2 class="title">Sign up</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input id="Username_sign_up" type="text" placeholder="Username" />
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-envelope"></i>
+                    <input id="Email_sign_up" type="text" placeholder="Email" />
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input id="password_sign_up" type="password" placeholder="Password" />
+                </div>
+                <input id="submit_btn_up" type="submit" value="Sign up" class="btn" />
+                <p class="social-text">Or Sign in with social platform</p>
+                <div class="social-media">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+                <p class="account-text">
+                    Already have an account? <a href="#" id="sign-in-btn2">Sign in</a>
+                </p>
+            </form>
+        </div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <h3>Member of Platform?</h3>
+
+                    <button class="btn" id="sign-in-btn">Sign in</button>
+                </div>
+                <img src="signin.svg" alt="" class="image" />
+            </div>
+            <div class="panel right-panel">
+                <div class="content">
+                    <h3>New Member To Platform?</h3>
+
+                    <button class="btn" id="sign-up-btn">Sign up</button>
+                </div>
+                <img src="signup.svg" alt="" class="image" />
+            </div>
+        </div>
+    </div>
+    <script type="module" src="script/module.js"></script>
+    <script type="module" src="script/form.js"></script>
+</body>
+
+</html> explain this code and explain fire store and js line by line by simpel way
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/e-learning.jpeg" type="image/x-icon" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="style/form.css" />
+    <title>signin-signup</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="signin-signup">
+            <!-- we should handle the action after make ahome-->
+            <form method="post" id="form_in" class="sign-in-form">
+
+                <h2 class="title">Sign in</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input id="Email_sign_in" type="email" placeholder="email" />
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input id="password_sign_in" type="password" placeholder="Password" />
+                </div>
+                <input id="submit_btn_in" type="submit" value="Login" class="btn" />
+                <p class="social-text">Or Sign in with social platform</p>
+                <div class="social-media">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+                <p class="account-text">
+                    Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a>
+                </p>
+            </form>
+            <form method="post" id="form" class="sign-up-form">
+                <h2 class="title">Sign up</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input id="Username_sign_up" type="text" placeholder="Username" />
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-envelope"></i>
+                    <input id="Email_sign_up" type="text" placeholder="Email" />
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input id="password_sign_up" type="password" placeholder="Password" />
+                </div>
+                <input id="submit_btn_up" type="submit" value="Sign up" class="btn" />
+                <p class="social-text">Or Sign in with social platform</p>
+                <div class="social-media">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+                <p class="account-text">
+                    Already have an account? <a href="#" id="sign-in-btn2">Sign in</a>
+                </p>
+            </form>
+        </div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <h3>Member of Platform?</h3>
+
+                    <button class="btn" id="sign-in-btn">Sign in</button>
+                </div>
+                <img src="signin.svg" alt="" class="image" />
+            </div>
+            <div class="panel right-panel">
+                <div class="content">
+                    <h3>New Member To Platform?</h3>
+
+                    <button class="btn" id="sign-up-btn">Sign up</button>
+                </div>
+                <img src="signup.svg" alt="" class="image" />
+            </div>
+        </div>
+    </div>
+    <script type="module" src="script/module.js"></script>
+    <script type="module" src="script/form.js"></script>
+</body>
+
+</html> explain this code and explain fire store and js line by line by simpel way
+ChatGPT said:
+👨‍🏫 شرح كود تسجيل الدخول والتسجيل مع Firebase Firestore بطريقة بسيطة 🎉
+🔹 الفكرة العامة:
+🔸 الصفحة تحتوي على نموذج لتسجيل الدخول (Sign in) ونموذج آخر لإنشاء حساب جديد (Sign up).
+🔸 يتم التعامل مع Firestore (قاعدة بيانات Firebase) لتخزين بيانات المستخدمين.
+🔸 يتم استدعاء ملفات JavaScript لتنفيذ تسجيل الدخول والتسجيل.
+
+يلا نشرح الكود سطر بسطر وبطريقة سهلة وبسيطة! 🚀
+
+🔹 1. HTML - الهيكلة الأساسية للصفحة
+📌 تعريف الصفحة وإضافة الملفات المهمة:
+
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html lang="en">
+⬅️ تعريف الصفحة بأنها HTML واللغة المستخدمة هي الإنجليزية.
+
+📌 إضافة معلومات الصفحة الأساسية داخل <head>:
+
+html
+Copy
+Edit
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/e-learning.jpeg" type="image/x-icon" />
+⬅️ نحدد نوع الأحرف UTF-8 ونجعل الموقع متوافقًا مع جميع الأجهزة (Responsive).
+⬅️ إضافة أيقونة للموقع (Favicon) وهي صورة e-learning.jpeg.
+
+📌 إضافة ملفات التصميم والأيقونات:
+
+html
+Copy
+Edit
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+<link rel="stylesheet" href="style/form.css" />
+⬅️ الأول: تحميل مكتبة FontAwesome لإضافة أيقونات مثل أيقونة المستخدم وكلمة المرور.
+⬅️ الثاني: تحميل ملف CSS لتنسيق الصفحة (form.css).
+
+📌 تحديد عنوان الصفحة في المتصفح:
+
+html
+Copy
+Edit
+<title>signin-signup</title>
+⬅️ يعرض عنوان الصفحة في التبويب (Tab) في المتصفح.
+
+🔹 2. تصميم واجهة تسجيل الدخول والتسجيل
+📌 إنشاء صندوق يحتوي على النموذجين:
+
+html
+Copy
+Edit
+<div class="container">
+    <div class="signin-signup">
+⬅️ هنا يتم وضع النموذجين معًا داخل div تحتوي على كلا النموذجين.
+
+✅ أولًا: نموذج تسجيل الدخول (Sign in)
+📌 نموذج تسجيل الدخول:
+
+html
+Copy
+Edit
+<form method="post" id="form_in" class="sign-in-form">
+    <h2 class="title">Sign in</h2>
+    <div class="input-field">
+        <i class="fas fa-user"></i>
+        <input id="Email_sign_in" type="email" placeholder="email" />
+    </div>
+    <div class="input-field">
+        <i class="fas fa-lock"></i>
+        <input id="password_sign_in" type="password" placeholder="Password" />
+    </div>
+    <input id="submit_btn_in" type="submit" value="Login" class="btn" />
+⬅️ هنا المستخدم يدخل بريده وكلمة مروره ثم يضغط زر Login لتسجيل الدخول.
+⬅️ نستخدم <input> مع id="Email_sign_in" و id="password_sign_in" لجلب القيم في JavaScript لاحقًا.
+
+📌 إضافة خيارات تسجيل الدخول عبر مواقع التواصل:
+
+html
+Copy
+Edit
+<p class="social-text">Or Sign in with social platform</p>
+<div class="social-media">
+    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+    <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
+    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+</div>
+⬅️ إضافة أزرار تسجيل الدخول عبر Facebook و Twitter و Google و LinkedIn (ولكنها حاليًا غير مفعلة).
+
+📌 إضافة رابط للتسجيل إذا لم يكن لدى المستخدم حساب:
+
+html
+Copy
+Edit
+<p class="account-text">
+    Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a>
+</p>
+⬅️ لو المستخدم ليس لديه حساب، يضغط على "Sign up" للتسجيل.
+
+✅ ثانيًا: نموذج تسجيل الحساب الجديد (Sign up)
+📌 نموذج تسجيل المستخدم الجديد:
+
+html
+Copy
+Edit
+<form method="post" id="form" class="sign-up-form">
+    <h2 class="title">Sign up</h2>
+    <div class="input-field">
+        <i class="fas fa-user"></i>
+        <input id="Username_sign_up" type="text" placeholder="Username" />
+    </div>
+    <div class="input-field">
+        <i class="fas fa-envelope"></i>
+        <input id="Email_sign_up" type="text" placeholder="Email" />
+    </div>
+    <div class="input-field">
+        <i class="fas fa-lock"></i>
+        <input id="password_sign_up" type="password" placeholder="Password" />
+    </div>
+    <input id="submit_btn_up" type="submit" value="Sign up" class="btn" />

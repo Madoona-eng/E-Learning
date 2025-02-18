@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll Courses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4CAF50, #2E3B4E);
+            display: flex;
+            flex-direction: column;
+            padding-top: 70px;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .enroll-container {
+            text-align: center;
+            padding: 20px;
+        }
+        .enroll-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .enroll-card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            width: 280px;
+            text-align: center;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .enroll-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .course-info h3 {
+            color: white;
+        }
+        .course-info p {
+            color: #ddd;
+        }
+        .enroll-btn, .feedback-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .feedback-btn {
+            background: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fa fa-book"></i> eLEARNING
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="courses.html" id="coursesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Courses
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="coursesDropdown">
+                            <li><a class="dropdown-item" href="page.html">All Pages</a></li>
+                            <li><a class="dropdown-item" href="wish.html">Wishlist</a></li>
+                            <li><a class="dropdown-item" href="enroll.html">Enrollment</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Pages
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="pagesDropdown">
+                            <li><a class="dropdown-item" href="teammm.html">Our Team</a></li>
+                            <li><a class="dropdown-item" href="termin.html">Testimonial</a></li>
+                            <li><a class="dropdown-item" href="error.html">404 Page</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <a href="login.html" class="btn btn-primary ms-3">Join Now <i class="fa fa-arrow-right"></i></a>
+                <a href="#" id="logout-btn" class="btn btn-primary ms-3">Logout <i class="fa fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="enroll-container">
+        <h1>📚 Enrolled Courses</h1>
+        <button class="enroll-btn" onclick="fetchCourses()">Get Enrolled Courses</button>
+        <div class="enroll-grid" id="enrollGrid"></div>
+        <p id="statusMessage" style="color: white; margin-top: 20px;"></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+            authDomain: "myproject-20868.firebaseapp.com",
+            projectId: "myproject-20868",
+            storageBucket: "myproject-20868.appspot.com",
+            messagingSenderId: "583730024363",
+            appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+            measurementId: "G-DG3HXGWRR1"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const userId = "USER123";
+    
+        async function fetchCourses() {
+            const enrollGrid = document.getElementById("enrollGrid");
+            const statusMessage = document.getElementById("statusMessage");
+            enrollGrid.innerHTML = "";
+            statusMessage.textContent = "Fetching courses...";
+    
+            try {
+                const enrollmentsSnapshot = await getDocs(query(collection(db, "enrollments"), where("approved", "==", true)));
+
+                if (enrollmentsSnapshot.empty) {
+                    statusMessage.textContent = "No enrolled courses found.";
+                    return;
+                }
+
+                enrollmentsSnapshot.forEach(doc => {
+                    const course = doc.data();
+                    const courseId = doc.id;
+
+                    const courseCard = document.createElement("div");
+                    courseCard.classList.add("enroll-card");
+                    courseCard.innerHTML = `
+                        <img src="${course.image}" alt="${course.title}">
+                        <div class="course-info">
+                            <h3>${course.title}</h3>
+                            <p>${course.description}</p>
+                            <p><strong>Price:</strong> $${course.price}</p>
+                            <button class="feedback-btn" onclick="addFeedback('${courseId}', '${userId}')">Add Feedback</button>
+                        </div>
+                    `;
+
+                    enrollGrid.appendChild(courseCard);
+                });
+
+                statusMessage.textContent = "Courses fetched successfully!";
+            } catch (error) {
+                statusMessage.textContent = "Failed to fetch courses. Please try again.";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eLearning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo i {
+            margin-right: 10px;
+        }
+
+        .navbar .nav-links a {
+            margin: 0 15px;
+            font-weight: 600;
+            color: white;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #d4efdf;
+        }
+
+        .btn-primary {
+            background: #d4efdf;
+            color: #2e7d32;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #b2dfdb;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://source.unsplash.com/1600x900/?education,learning') center/cover no-repeat;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            animation: fadeInUp 1.5s;
+        }
+
+        .hero p {
+            font-size: 18px;
+            animation: fadeInUp 2s;
+        }
+
+        /* Services */
+        .services {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .services h2 {
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        .services .service-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .service-item {
+            background: white;
+            padding: 20px;
+            width: 250px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .service-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-item i {
+            font-size: 40px;
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+   
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fa fa-book"></i> eLEARNING
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="courses.html" id="coursesDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Courses
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="coursesDropdown">
+                            <li><a class="dropdown-item" href="page.html">All Pages</a></li>
+                            <li><a class="dropdown-item" href="wish.html">Wishlist</a></li>
+                            <li><a class="dropdown-item" href="enroll.html">Enrollment</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Pages
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="pagesDropdown">
+                            <li><a class="dropdown-item" href="teammm.html">Our Team</a></li>
+                            <li><a class="dropdown-item" href="termin.html">Testimonial</a></li>
+                            <li><a class="dropdown-item" href="error.html">404 Page</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <a href="login.html" class="btn btn-primary ms-3">Join Now <i class="fa fa-arrow-right"></i></a>
+                <a href="#" id="logout-btn" class="btn btn-primary ms-3">Logout <i class="fa fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <section class="hero">
+        <div>
+            <h1 style="color: #333;">Empower Your Learning</h1>
+            <p style="color: #333;">Join thousands of learners and take your skills to the next level.</p>
+        </div>
+    </section>
+
+    <div class="services">
+        <h2>Our Services</h2>
+        <div class="service-container">
+            <div class="service-item">
+                <i class="fa fa-graduation-cap"></i>
+                <h3>Skilled Instructors</h3>
+                <p>Learn from industry experts and top instructors.</p>
+            </div>
+            <div class="service-item">
+                <i class="fa fa-globe"></i>
+                <h3>Online Classes</h3>
+                <p>Access high-quality courses from anywhere.</p>
+            </div>
+            <div class="service-item">
+                <i class="fa fa-home"></i>
+                <h3>Home Projects</h3>
+                <p>Practical projects to enhance your learning.</p>
+            </div>
+            <div class="service-item">
+                <i class="fa fa-book"></i>
+                <h3>Book Library</h3>
+                <p>Get unlimited access to premium learning materials.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

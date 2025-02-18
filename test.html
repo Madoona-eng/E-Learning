@@ -1,0 +1,21 @@
+// Import the necessary Firebase SDKs
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+
+// Firebase configuration object
+const firebaseConfig = {
+  apiKey: "AIzaSyCkOEIyyxK85yJOrjBMqF23Tu5z0gZnVHg",
+  authDomain: "applaction-b41ea.firebaseapp.com",
+  projectId: "applaction-b41ea",
+  storageBucket: "applaction-b41ea.firebasestorage.app",
+  messagingSenderId: "1011874284262",
+  appId: "1:1011874284262:web:3d16d059ae74fd84ee7127",
+  measurementId: "G-VX10YKSQZG"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+// Export Firebase instances for use in other parts of your app
+export { app, analytics };

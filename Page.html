@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Courses</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="pages.css">
+    <style>
+        .form-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            margin: 20px auto;
+        }
+        input, textarea, button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #2c7b3d;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #22602e;
+            transform: scale(1.05);
+        }
+        .search-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .search-input {
+            width: 50%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2ECC71;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo i {
+            margin-right: 10px;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .nav-links a {
+            margin: 0 15px;
+            font-weight: 600;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #2ECC71;
+        }
+
+        .navbar .nav-links .dropdown {
+            position: fixed;
+        }
+
+        .navbar .nav-links .dropdown-content {
+            display: none;
+            position: fixed;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 10px 0;
+            z-index: 1;
+        }
+
+        .navbar .nav-links .dropdown-content a {
+            display: block;
+            padding: 10px 20px;
+            color: #333;
+            transition: background 0.3s;
+        }
+
+        .navbar .nav-links .dropdown-content a:hover {
+            background: #2ECC71;
+        }
+
+        .navbar .nav-links .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .navbar .btn-primary {
+            background: #2ECC71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .navbar .btn-primary:hover {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+
+
+
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fa fa-book"></i> eLEARNING
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="courses.html" id="coursesDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Courses
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="coursesDropdown">
+                            <li><a class="dropdown-item" href="page.html">All Pages</a></li>
+                            <li><a class="dropdown-item" href="wish.html">Wishlist</a></li>
+                            <li><a class="dropdown-item" href="enroll.html">Enrollment</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Pages
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="pagesDropdown">
+                            <li><a class="dropdown-item" href="teammm.html">Our Team</a></li>
+                            <li><a class="dropdown-item" href="termin.html">Testimonial</a></li>
+                            <li><a class="dropdown-item" href="error.html">404 Page</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <a href="login.html" class="btn btn-primary ms-3">Join Now <i class="fa fa-arrow-right"></i></a>
+                <a href="#" id="logout-btn" class="btn btn-primary ms-3">Logout <i class="fa fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </nav>
+
+
+        <h1>Available Courses</h1>
+
+    <div class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="Search courses...">
+    </div>
+
+    <button id="add-course-btn">Fetch Courses</button> 
+    
+    <div class="courses-container" id="courses-container">
+        <!-- سيتم إدراج الكورسات هنا من Firestore -->
+    </div>
+
+    <br><br>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+            authDomain: "myproject-20868.firebaseapp.com",
+            projectId: "myproject-20868",
+            storageBucket: "myproject-20868.appspot.com",
+            messagingSenderId: "583730024363",
+            appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+            measurementId: "G-DG3HXGWRR1"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        let allCourses = [];
+
+        async function fetchCourses() {
+            const coursesContainer = document.getElementById("courses-container");
+            const querySnapshot = await getDocs(collection(db, "courses"));
+            allCourses = [];
+
+            querySnapshot.forEach(doc => {
+                const course = doc.data();
+                allCourses.push(course);
+            });
+
+            displayCourses(allCourses);
+        }
+
+        function displayCourses(filteredCourses) {
+            const coursesContainer = document.getElementById("courses-container");
+            coursesContainer.innerHTML = "";
+
+            if (filteredCourses.length === 0) {
+                coursesContainer.innerHTML = "<p>No courses found.</p>";
+                return;
+            }
+
+            filteredCourses.forEach(course => {
+                const courseElement = document.createElement("div");
+                courseElement.classList.add("course-card");
+                courseElement.innerHTML = `
+                    <div class="course-image">
+                        <img src="${course.image}" alt="${course.title}">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">${course.title}</h3>
+                        <p class="course-description">${course.description}</p>
+                        <p class="course-price">$${course.price}</p>
+                        <div class="course-actions">
+                            <button class="enroll-btn">Enroll Now</button>
+                            <button class="wishlist-btn">Add to Wishlist</button>
+                        </div>
+                    </div>`;
+    
+                courseElement.querySelector(".enroll-btn").addEventListener("click", async () => {
+                    try {
+                        const enrollmentData = { ...course, approved: false };
+                        await addDoc(collection(db, "enrollments"), enrollmentData);
+                        alert("Enrolled successfully! Waiting for approval.");
+                    } catch (error) {
+                        console.error("Error enrolling: ", error);
+                        alert("Failed to enroll. Please try again.");
+                    }
+                });
+    
+                courseElement.querySelector(".wishlist-btn").addEventListener("click", async () => {
+                    try {
+                        await addDoc(collection(db, "wishlist"), course);
+                        alert(`${course.title} added to wishlist!`);
+                    } catch (error) {
+                        console.error("Error adding to wishlist: ", error);
+                        alert("Failed to add to wishlist. Please try again.");
+                    }
+                });
+
+                coursesContainer.appendChild(courseElement);
+            });
+        }
+
+        document.getElementById("search-input").addEventListener("input", (e) => {
+            const searchText = e.target.value.toLowerCase();
+            const filteredCourses = allCourses.filter(course => course.title.toLowerCase().includes(searchText));
+            displayCourses(filteredCourses);
+        });
+
+        document.getElementById("add-course-btn").addEventListener("click", fetchCourses);
+        fetchCourses();
+    </script>
+    
+    <script src="pages.js"></script>
+</body>
+</html>

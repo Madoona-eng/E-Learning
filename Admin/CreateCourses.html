@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Courses</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="pages.css">
+    <style>
+        .form-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            margin: 20px auto;
+        }
+        input, textarea, button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #2c7b3d;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #22602e;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Available Courses</h1>
+    </header>
+    
+    <!-- <button id="add-course-btn">Add Sample Courses</button> -->
+    
+    <div class="form-container">
+        <h2>Add a New Course</h2>
+        <input type="text" id="courseTitle" placeholder="Course Title">
+        <textarea id="courseDescription" placeholder="Course Description"></textarea>
+        <input type="number" id="coursePrice" placeholder="Course Price" min="0" step="0.01">
+        <input type="text" id="courseImageUrl" placeholder="Course Image URL">
+        <button id="uploadCourse">Upload Course</button>
+    </div>
+
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+            authDomain: "myproject-20868.firebaseapp.com",
+            projectId: "myproject-20868",
+            storageBucket: "myproject-20868.appspot.com",
+            messagingSenderId: "583730024363",
+            appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+            measurementId: "G-DG3HXGWRR1"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+    
+        // async function fetchCourses() {
+        //     const coursesContainer = document.getElementById("courses-container");
+        //     const querySnapshot = await getDocs(collection(db, "courses"));
+        //     coursesContainer.innerHTML = "";
+        //     querySnapshot.forEach(doc => {
+        //         const course = doc.data();
+        //         coursesContainer.innerHTML += `
+        //             <div class="course-card">
+        //                 <div class="course-image">
+        //                     <img src="${course.image}" alt="${course.title}">
+        //                 </div>
+        //                 <div class="course-content">
+        //                     <h3 class="course-title">${course.title}</h3>
+        //                     <p class="course-description">${course.description}</p>
+        //                     <p class="course-price">$${course.price}</p>
+        //                     <div class="course-actions">
+        //                         <button class="enroll-btn">Enroll Now</button>
+        //                         <button class="wishlist-btn">Add to Wishlist</button>
+        //                     </div>
+        //                 </div>
+        //             </div>`;
+        //     });
+        // }
+    /*
+        async function addSampleCourses() {
+            const sampleCourses = [
+                {
+                    title: "JavaScript Basics",
+                    image: "https://via.placeholder.com/150",
+                    description: "Learn the fundamentals of JavaScript programming.",
+                    price: "39.99"
+                },
+                {
+                    title: "React for Beginners",
+                    image: "https://via.placeholder.com/150",
+                    description: "A beginner's guide to building web apps with React.",
+                    price: "59.99"
+                },
+                {
+                    title: "Python Data Science",
+                    image: "https://via.placeholder.com/150",
+                    description: "Master data science and machine learning with Python.",
+                    price: "79.99"
+                }
+            ];
+    
+            try {
+                for (const course of sampleCourses) {
+                    await addDoc(collection(db, "courses"), course);
+                }
+                fetchCourses();
+            } catch (error) {
+                console.error("Error adding courses: ", error);
+            }
+        }
+    */
+        async function uploadCourse() {
+            const title = document.getElementById("courseTitle").value;
+            const description = document.getElementById("courseDescription").value;
+            const price = document.getElementById("coursePrice").value;
+            const imageUrl = document.getElementById("courseImageUrl").value;
+    
+            if (!title || !description || !price || !imageUrl) {
+                alert("Please fill in all fields");
+                return;
+            }
+    
+            const courseData = { title, description, price, image: imageUrl };
+    
+            await addDoc(collection(db, "courses"), courseData);
+            alert("Course successfully added!");
+            //fetchCourses();
+        }
+    
+        //document.getElementById("add-course-btn").addEventListener("click", addSampleCourses);
+        document.getElementById("uploadCourse").addEventListener("click", uploadCourse);
+    
+        //fetchCourses();
+    </script>
+    
+    <script src="pages.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Course - Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #555, #8bc34a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+        }
+        h2 {
+            color: #2c7b3d;
+        }
+        input, textarea, button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #2c7b3d;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #22602e;
+            transform: scale(1.05);
+        }
+        .svg-container {
+            margin: 10px auto;
+            width: 50px;
+            animation: rotate 2s infinite linear;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="svg-container">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green" width="50" height="50">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/>
+            </svg>
+        </div>
+        <h2>Edit Course</h2>
+        <input type="text" id="courseName" placeholder="Course Name">
+        <textarea id="courseDescription" placeholder="Course Description"></textarea>
+        <input type="number" id="coursePrice" placeholder="Course Price" min="0" step="0.01">
+        <input type="file" id="courseImage" accept="image/*">
+        <button onclick="editCourse()">Save Changes</button>
+    </div>
+    <script>
+        function editCourse() {
+            const name = document.getElementById('courseName').value;
+            const description = document.getElementById('courseDescription').value;
+            const price = document.getElementById('coursePrice').value;
+            const image = document.getElementById('courseImage').files[0];
+            
+            if (name.trim() === "" || description.trim() === "" || price.trim() === "" || !image) {
+                alert("Please fill in all fields");
+                return;
+            }
+            
+            if (isNaN(price) || parseFloat(price) <= 0) {
+                alert("Please enter a valid price greater than zero");
+                return;
+            }
+            
+            console.log("Course Updated:", { name, description, price, image: image.name });
+            alert("Course successfully updated!");
+            
+            document.getElementById('courseName').value = "";
+            document.getElementById('courseDescription').value = "";
+            document.getElementById('coursePrice').value = "";
+            document.getElementById('courseImage').value = "";
+        }
+    </script>
+</body>
+</html>

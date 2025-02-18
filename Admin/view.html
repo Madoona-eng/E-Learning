@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="view.css">
+    <style>
+        .create-course-btn {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 12px 24px;
+            background-color: #2ECC71;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+            text-align: center;
+        }
+        .create-course-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <a href="CreateCourses.html" class="create-course-btn">Create Course</a>
+    <header>
+        <h1>Available Courses</h1>
+    </header>
+    <div class="courses-container" id="available-courses">
+        <!-- Available courses will be loaded here -->
+    </div>
+    
+    <header>
+        <h1>Enrolled Courses</h1>
+    </header>
+    <div class="courses-container" id="enrolled-courses">
+        <!-- Enrolled courses will be loaded here -->
+    </div>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } 
+            from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCF5BNoZgIbx4g4vpqx-5Fdgk5S8auZE",
+            authDomain: "myproject-20868.firebaseapp.com",
+            projectId: "myproject-20868",
+            storageBucket: "myproject-20868.appspot.com",
+            messagingSenderId: "583730024363",
+            appId: "1:583730024363:web:28a64f3e9806a0319f4cee",
+            measurementId: "G-DG3HXGWRR1"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+    
+        async function fetchCourses() {
+            const availableContainer = document.getElementById("available-courses");
+            availableContainer.innerHTML = ""; 
+            const querySnapshot = await getDocs(collection(db, "courses"));
+            querySnapshot.forEach(doc => {
+                const course = doc.data();
+                availableContainer.appendChild(createCourseCard(course, doc.id, false));
+            });
+        }
+    
+        async function fetchEnrollments() {
+            const enrolledContainer = document.getElementById("enrolled-courses");
+            enrolledContainer.innerHTML = "";
+            const querySnapshot = await getDocs(collection(db, "enrollments"));
+            querySnapshot.forEach(doc => {
+                const enrollment = doc.data();
+                if (!enrollment.approved) {
+                    enrolledContainer.appendChild(createCourseCard(enrollment, doc.id, true));
+                }
+            });
+        }
+    
+        function createCourseCard(course, id, isEnrolled) {
+            const courseCard = document.createElement("div");
+            courseCard.classList.add("course-card");
+            
+            courseCard.innerHTML = `
+                <div class="course-image">
+                    <img src="${course.image}" alt="${course.title}">
+                </div>
+                <div class="course-content">
+                    <h3 class="course-title">${course.title}</h3>
+                    <p class="course-description">${course.description}</p>
+                    <p class="course-price">$${course.price}</p>
+                    <div class="course-actions">
+                        ${isEnrolled ? `
+                        <button class="approve-btn" onclick="approveCourse('${id}')">Approve</button>
+                        <button class="ignore-btn" onclick="ignoreCourse('${id}')">Ignore</button>
+                        ` : `
+                        <button class="delete-btn" onclick="deleteCourse('${id}')">Delete</button>
+                        <button class="update-btn" onclick="updateCourse('${id}')">Edit</button>
+                        `}
+                    </div>
+                </div>
+            `;
+            return courseCard;
+        }
+    
+        async function deleteCourse(id) {
+            await deleteDoc(doc(db, "courses", id));
+            fetchCourses();
+        }
+    
+        async function updateCourse(id) {
+            const newTitle = prompt("Enter new title:");
+            if (newTitle) {
+                await updateDoc(doc(db, "courses", id), { title: newTitle });
+                fetchCourses();
+            }
+            const newPrice = prompt("Enter new Price:");
+            if (newPrice) {
+                await updateDoc(doc(db, "courses", id), { price: newPrice });
+                fetchCourses();
+            }
+        }
+    
+        async function approveCourse(id) {
+            await updateDoc(doc(db, "enrollments", id), { approved: true });
+            fetchEnrollments();
+        }
+    
+        async function ignoreCourse(id) {
+            await updateDoc(doc(db, "enrollments", id), { approved: false });
+            fetchEnrollments();
+        }
+    
+        window.deleteCourse = deleteCourse;
+        window.updateCourse = updateCourse;
+        window.approveCourse = approveCourse;
+        window.ignoreCourse = ignoreCourse;
+    
+        window.onload = function () {
+            fetchCourses();
+            fetchEnrollments();
+        };
+    </script>
+</body>
+</html>
